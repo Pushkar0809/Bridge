@@ -17,15 +17,17 @@ public class TaskTemplates {
 
         // Navigate & Login
         driver.get("https://dev-bridge.bloomhotels.in/");
-        driver.findElement(By.xpath("//*[@id='login']")).sendKeys("selenium");
-        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("123@selenium");
-        By.xpath("//*[@id='formContent']/form/div/input").findElement(driver).click();
+        driver.findElement(By.id("login")).sendKeys("selenium");
+        driver.findElement(By.id("password")).sendKeys("123@selenium");
+        driver.findElement(By.xpath("//input[@value='Log In']")).click();
         Thread.sleep(3000);
+        System.out.println("✔ Login successful");
 
         // Select property
-        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys("patna");
+        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("Bandra");
         driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
         Thread.sleep(3000);
+        System.out.println("✔ Property selected");
 
         // Go to place page and apply dirty filter ONCE
         driver.get("https://dev-bridge.bloomhotels.in/#/task-template/template-list");
@@ -40,6 +42,7 @@ public class TaskTemplates {
         Thread.sleep(5000);
         driver.findElement(By.xpath("//input[@matinput and @placeholder='Filter']")).sendKeys("Cleaning");
         Thread.sleep(5000);
+        System.out.println("Task Template created");
 
         // Log-out from Bridge
         driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();

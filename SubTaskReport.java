@@ -18,14 +18,14 @@ public class SubTaskReport {
 
         // Navigate & Login
         driver.get("https://dev-bridge.bloomhotels.in/");
-        driver.findElement(By.xpath("//*[@id='login']")).sendKeys("selenium");
-        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("123@selenium");
-        By.xpath("//*[@id='formContent']/form/div/input").findElement(driver).click();
+        driver.findElement(By.id("login")).sendKeys("selenium");
+        driver.findElement(By.id("password")).sendKeys("123@selenium");
+        driver.findElement(By.xpath("//input[@value='Log In']")).click();
         Thread.sleep(3000);
         System.out.println("✔ Login successful");
 
         // Select property
-        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys("Bandra");
+        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("Bandra");
         driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
         Thread.sleep(3000);
         System.out.println("✔ Property selected");
