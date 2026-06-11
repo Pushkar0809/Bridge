@@ -8,7 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class TaskTemplates {
+public class DutyTracer {
+
     static ChromeDriver driver;
     static WebDriverWait wait;
 
@@ -20,44 +21,41 @@ public class TaskTemplates {
         // Navigate & Login
         driver.get("https://dev-bridge.bloomhotels.in/");
         driver.findElement(By.id("login")).sendKeys("selenium");
-        driver.findElement(By.id("password")).sendKeys("123@selenium");
+        driver.findElement(By.id("password")).sendKeys("123@Selenium");
         driver.findElement(By.xpath("//input[@value='Log In']")).click();
         Thread.sleep(3000);
-        System.out.println("✔ Login successful");
+        System.out.println("✔ DEV Login successful");
+//        System.out.println("✔  QA Login successful");
 
         // Select property
-        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("Bandra");
+        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("janpath");
         driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
         Thread.sleep(3000);
         System.out.println("✔ Property selected");
 
-        // Go to place page and apply dirty filter ONCE
+
+        // GO TO Duty Tracker
         Actions actions = new Actions(driver);
-        WebElement element = driver.findElement(By.xpath("//mat-icon[text()='settings_applications']"));
+        WebElement element = driver.findElement(By.xpath("//img[@alt='Duty Tracker']"));
 
         // Hover over element
         actions.moveToElement(element).perform();
-        driver.findElement(By.xpath("//mat-icon[text()='settings_applications']")).click();
-        driver.findElement(By.xpath("//a[.//span[normalize-space()='Task Template']]")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//a[@class='btn-global' and text()='New Template']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//mat-expansion-panel-header[@id='mat-expansion-panel-header-9']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//a[text()='Cleaning and Servicing']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//button[@class='success-lg-btn']")).click();
+        driver.findElement(By.xpath("//img[@alt='Duty Tracker']")).click();
+//        driver.findElement(By.xpath("//a[.//span[normalize-space()='Access Control']]")).click();
+        System.out.println("✔ DutyTracer page open");
         Thread.sleep(5000);
-        driver.findElement(By.xpath("//input[@matinput and @placeholder='Filter']")).sendKeys("Cleaning");
+        By.xpath("//button[text()='Reset']").findElement(driver).click();
         Thread.sleep(5000);
-        System.out.println("Task Template created");
+        driver.findElement(By.xpath("//div[contains(@class,'mat-checkbox-inner-container')]")).click();
+        Thread.sleep(5000);
+        System.out.println("✔ Duty Tracker Done");
 
         // Log-out from Bridge
         driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();
         Thread.sleep(3000);
         System.out.println("✔ Logged out successfully");
         driver.quit();
-        System.out.println("Task Templates process complete");
+        System.out.println("✔ Browser closed — Duty Tracker and User Access script completed");
 
 
     }

@@ -1,7 +1,9 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -18,11 +20,13 @@ public class AnomalyReport {
 
         // Navigate & Login
         driver.get("https://dev-bridge.bloomhotels.in/");
+//        driver.get("https://qa-bridge.bloomrooms.in/");
         driver.findElement(By.xpath("//*[@id='login']")).sendKeys("selenium");
         driver.findElement(By.xpath("//*[@id='password']")).sendKeys("123@selenium");
         By.xpath("//*[@id='formContent']/form/div/input").findElement(driver).click();
         Thread.sleep(3000);
-        System.out.println("✔ Login successful");
+        System.out.println("✔ DEV Login successful");
+//        System.out.println("✔ QA Login successful");
 
         // Select property
         driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys("Bandra");
@@ -31,23 +35,30 @@ public class AnomalyReport {
         System.out.println("✔ Property selected");
 
         // GO TO Anamoly REPORT
-        driver.get("https://dev-bridge.bloomhotels.in/#/reports/anamoly-report");
-        Thread.sleep(3000);
-        System.out.println("✔ Navigated to SUBTask Report page");
+        Actions actions = new Actions(driver);
+        WebElement element = driver.findElement(By.xpath("//a[span[text()='Reports']]"));
 
-        // Recent anomaly
-        driver.findElement(By.xpath("//a[text()='Pending Anomalies']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//a[contains(text(),'Export')]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Recent anomaly exported successfully");
+        // Hover over element
+        actions.moveToElement(element).perform();
+        driver.findElement(By.xpath("//a[span[text()='Reports']]")).click();
+        System.out.println("✔ Navigated to Report page");
+        driver.findElement(By.xpath("//a[normalize-space()='Anamoly Report']")).click();
+        Thread.sleep(5000);
+        System.out.println("✔ Navigated to Anomaly Report page");
 
-        // Recent anomaly
+        // All anomaly
         driver.findElement(By.xpath("//a[text()='All Anomalies']")).click();
         Thread.sleep(3000);
 //        driver.findElement(By.xpath("//a[contains(text(),'Export')]")).click();
 //        Thread.sleep(3000);
         System.out.println("✔ All Anomalies exported successfully");
+
+        // Pending anomaly
+        driver.findElement(By.xpath("//a[text()='Pending Anomalies']")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//a[contains(text(),'Export')]")).click();
+        Thread.sleep(3000);
+        System.out.println("✔ Pending anomaly exported successfully");
 
         // MESH
         driver.findElement(By.xpath("//a[text()='Mesh']")).click();
