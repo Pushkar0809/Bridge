@@ -1,4 +1,4 @@
-package org.example;
+package org.bridge.bridgeFlows;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -9,30 +9,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class AcessControl {
-
-    static ChromeDriver driver;
     static WebDriverWait wait;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void acesscontrol(ChromeDriver driver) throws InterruptedException {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
-
-        // Navigate & Login
-        driver.get("https://dev-bridge.bloomhotels.in/");
-        driver.findElement(By.id("login")).sendKeys("selenium");
-        driver.findElement(By.id("password")).sendKeys("123@Selenium");
-        driver.findElement(By.xpath("//input[@value='Log In']")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ DEV Login successful");
-//        System.out.println("✔  QA Login successful");
-
-        // Select property
-        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("Janpath");
-        driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Property selected");
-
 
         // Go to Access Control Page
         Actions actions = new Actions(driver);
@@ -61,7 +43,7 @@ public class AcessControl {
 //        System.out.println("✔ New User Created");
 
 
-        //UPDATE USER IN OTHER PROPERTY
+        // UPDATE USER IN OTHER PROPERTY
 //        driver.findElement(By.xpath("//a[text()='Add New User']")).click();
 //        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("Selenium");
 //        driver.findElement(By.xpath("//input[@name='firstName']")).click();
@@ -76,7 +58,7 @@ public class AcessControl {
         Thread.sleep(3000);
         System.out.println("✔ User created in other property");
 
-        //EDIT USER STATUS
+          // EDIT USER STATUS
 //        driver.findElement(By.xpath("//input[@placeholder='Filter']")).sendKeys("RAW");
 //        driver.findElement(By.xpath("//td[normalize-space()='TEST RAW']")).click();
 //        driver.findElement(By.xpath("//input[@name='phoneNo']")).sendKeys("1234567890");
@@ -86,12 +68,10 @@ public class AcessControl {
 //        System.out.println("✔ User details Updated");
 
 
-        // Log-out from Bridge
-        driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Logged out successfully");
-        driver.quit();
-        System.out.println("✔ Browser closed — Duty Tracker and User Access script completed");
+        driver.findElement(By.xpath("//mat-icon[normalize-space()='location_city']"));
+        System.out.println("✔ Move to property page");
+
+        System.out.println("✔ User Access script completed");
 
     }
 }

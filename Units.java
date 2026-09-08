@@ -1,4 +1,4 @@
-package org.example;
+package org.bridge.bridgeFlows;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -9,30 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class Units {
-
-    static ChromeDriver driver;
     static WebDriverWait wait;
 
-    public static void main(String[] args) throws InterruptedException {
-        driver = new ChromeDriver();
+public static void units(ChromeDriver driver) throws InterruptedException {
+//        driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        // Navigate & Login
-        driver.get("https://dev-bridge.bloomhotels.in/");
-//        driver.get("https://qa-bridge.bloomrooms.in/");
-        driver.findElement(By.xpath("//*[@id='login']")).sendKeys("selenium");
-        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("123@selenium");
-        By.xpath("//*[@id='formContent']/form/div/input").findElement(driver).click();
-        Thread.sleep(3000);
-        System.out.println("✔ DEV Login successful");
-//        System.out.println("✔ QA Login successful");
-
-        // Select property
-        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys("Janpath");
-        driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Property selected");
 
         // GO TO UNITS
         Actions actions = new Actions(driver);
@@ -57,11 +40,8 @@ public class Units {
         Thread.sleep(3000);
         System.out.println("✔ Unit Created");
 
-
-        // Log-out from Bridge
-        driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();
-        Thread.sleep(3000);
-        driver.close();
+        driver.findElement(By.xpath("//mat-icon[normalize-space()='location_city']"));
+        System.out.println("✔ Move to property page");
 
 
     }

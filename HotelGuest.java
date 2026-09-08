@@ -1,4 +1,4 @@
-package org.example;
+package org.bridge.bridgeFlows;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,27 +7,11 @@ import java.time.Duration;
 
 public class HotelGuest {
 
-    static ChromeDriver driver;
     static WebDriverWait wait;
 
-    public static void main(String[] args) throws InterruptedException {
-        driver = new ChromeDriver();
+public static void hotelguest(ChromeDriver driver) throws InterruptedException {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
-
-        // Navigate & Login
-        driver.get("https://dev-bridge.bloomhotels.in/");
-        driver.findElement(By.id("login")).sendKeys("selenium");
-        driver.findElement(By.id("password")).sendKeys("123@selenium");
-        driver.findElement(By.xpath("//input[@value='Log In']")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Login successful");
-
-        // Select property
-        driver.findElement(By.xpath("//input[contains(@class,'search__property__input')]")).sendKeys("Bandra");
-        driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Property selected");
 
         // GO TO GUEST MOVEMENT
         driver.get("https://dev-bridge.bloomhotels.in/#/guest-movement");
@@ -36,24 +20,16 @@ public class HotelGuest {
 
         driver.findElement(By.xpath("//a[text()='clear']")).click();
         Thread.sleep(3000);
-        System.out.println("Clear Inhouse Guest Plan Report");
+        System.out.println("✔ Clear Inhouse Guest Plan Report");
 
         By.xpath("//h4[text()='Download Inhouse guest plan report']").findElement(driver).click();
         Thread.sleep(3000);
-        System.out.println("Download Inhouse Guest Plan Report");
+        System.out.println("✔ Download Inhouse Guest Plan Report");
 
+       driver.findElement(By.xpath("//mat-icon[normalize-space()='location_city']"));
+       System.out.println("✔ Move to property page");
 
-
-        // Log-out from Bridge
-        driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();
-        Thread.sleep(3000);
-        System.out.println("✔ Logged out successfully");
-        driver.quit();
-        System.out.println("✔ Browser closed — Duty Tracker and User Access script completed");
-
-
-
-
+        System.out.println("✔ Hotel Guest script completed");
 
     }
 }

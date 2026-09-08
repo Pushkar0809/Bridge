@@ -1,12 +1,15 @@
-package org.example;
+package org.bridge.bridgeFlows;
 
+import org.bridge.bridgeEnums.BridgeFlowEnums;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 public class E2E {
@@ -19,269 +22,143 @@ public class E2E {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        // Navigate & Login
+        // Environment
+//        driver.get("https://qa-bridge.bloomrooms.in/");
         driver.get("https://dev-bridge.bloomhotels.in/");
-        driver.findElement(By.xpath("//*[@id='login']")).sendKeys("selenium");
-        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("123@selenium");
-        By.xpath("//*[@id='formContent']/form/div/input").findElement(driver).click();
+        System.out.println("✔ Redirected to Bridge");
+
+        // Navigate & Login (done once)
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+        By username = By.xpath("//input[@id='login']");
+        WebElement user = wait.until(ExpectedConditions.presenceOfElementLocated(username));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(username));
+        user = driver.findElement(username);
+        user.sendKeys("selenium");
+        driver.findElement(By.id("password")).sendKeys("123@Selenium");
+        driver.findElement(By.xpath("//input[@value='Log In']")).click();
+        System.out.println("✔ Log in Successful");
         Thread.sleep(3000);
 
-        // Select property
-        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys("Janpath");
-        driver.findElement(By.xpath("//*[@id=\"main-container\"]/app-property-list/div/div[2]/div/a/div/div[1]")).click();
-        Thread.sleep(3000);
+        // List of hotels to run the flow on
+        List<String> hotelList = Arrays.asList(
+               "worli" ,"WATERFRONT","Patna","janpath","Bandra"
+//                "Bandra"
+        );
 
-        // Go to Access Control Page
-        driver.get("https://dev-bridge.bloomhotels.in/#/accessControl");
-        Thread.sleep(5000);
+//        BridgeFlowEnums.BridgeFlows  bridgeFlow=  BridgeFlowEnums.BridgeFlows.DUTY_TRACKER;
 
-        // CREATE NEW USER
-//        driver.findElement(By.xpath("//a[text()='Add New User']")).click();
-//        Thread.sleep(3000);
-//        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("raw");
-//        driver.findElement(By.xpath("//input[@name='firstName']")).sendKeys("TEST");
-//        driver.findElement(By.xpath("//input[@name='lastName']")).sendKeys("RAW");
-//        driver.findElement(By.xpath("//input[@name='phoneNo']")).sendKeys("1234567890");
-//        driver.findElement(By.xpath("//mat-select[@placeholder='Department']")).click();
-//        driver.findElement(By.xpath("//mat-option//span[normalize-space()='housekeeping']")).click();
-//        driver.findElement(By.xpath("//mat-select[@aria-label='Level']")).click();
-//        driver.findElement(By.xpath("//mat-option//span[normalize-space()='1']")).click();
-//        driver.findElement(By.xpath("//input[@type='password']")).sendKeys("Bloom@123");
-//        driver.findElement(By.xpath("//input[@formcontrolname='status' and @type='checkbox']")).click();
-//        driver.findElement(By.xpath("//button[normalize-space()='Create']")).click();
-//        Thread.sleep(5000);
+        // List of flows to run, IN ORDER, one after another
+        List<BridgeFlowEnums.BridgeFlows> flowsToRun = Arrays.asList(
+                BridgeFlowEnums.BridgeFlows.ANOMALY_REPORT,
+                BridgeFlowEnums.BridgeFlows.DUTY_TRACKER,
+                BridgeFlowEnums.BridgeFlows.HOTEL_GUEST,
+                BridgeFlowEnums.BridgeFlows.PLACE_REPORT,
+                BridgeFlowEnums.BridgeFlows.TASK_REPORT,
+                BridgeFlowEnums.BridgeFlows.SUBTASK_REPORT,
+                BridgeFlowEnums.BridgeFlows.DIRTY,
+                BridgeFlowEnums.BridgeFlows.TOUCH_UP,
+                BridgeFlowEnums.BridgeFlows.TASK,
+                BridgeFlowEnums.BridgeFlows.AREAS,
+                BridgeFlowEnums.BridgeFlows.UNITS,
+                BridgeFlowEnums.BridgeFlows.ACESS_CONTROL,
+                BridgeFlowEnums.BridgeFlows.TASK_TEMPLATES,
+                BridgeFlowEnums.BridgeFlows.DELETE_TASK
+        );
 
-        //UPDATE USER IN OTHER PROPERTY
-        driver.findElement(By.xpath("//a[text()='Add New User']")).click();
-        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("raw");
-        driver.findElement(By.xpath("//input[@name='firstName']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//a[text()='Existing User']")).click();
-        driver.findElement(By.xpath("//input[@type='password']")).sendKeys("Bloom@12");
-        driver.findElement(By.xpath("//input[@formcontrolname='status' and @type='checkbox']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//input[@value='Update']")).click();
-
-        //EDIT USER STATUS
-        driver.findElement(By.xpath("//input[@placeholder='Filter']")).sendKeys("RAW");
-        driver.findElement(By.xpath("//td[normalize-space()='TEST RAW']")).click();
-        driver.findElement(By.xpath("//input[@name='phoneNo']")).sendKeys("1234567890");
-        driver.findElement(By.xpath("//input[@type='password']")).sendKeys("Bloom@123");
-        driver.findElement(By.xpath("//input[@formcontrolname='status' and @type='checkbox']")).click();
-        driver.findElement(By.xpath("//button[normalize-space()='Update']")).click();
-
-        // GO TO Duty Tracker
-        driver.get("https://dev-bridge.bloomhotels.in/#/user-logs");
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//button[text()='Reset']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//div[contains(@class,'mat-checkbox-inner-container')]")).click();
-        Thread.sleep(5000);
-
-        // Go to place page and apply dirty filter ONCE
-        driver.get("https://dev-bridge.bloomhotels.in/#/task-template/template-list");
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//a[@class='btn-global' and text()='New Template']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//mat-expansion-panel-header[@id='mat-expansion-panel-header-9']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//a[text()='Cleaning and Servicing']")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//button[@class='success-lg-btn']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//input[@matinput and @placeholder='Filter']")).sendKeys("Cleaning");
-        Thread.sleep(5000);
-
-        // Go to place page and apply dirty filter ONCE
-        driver.get("https://dev-bridge.bloomhotels.in/#/place");
-        Thread.sleep(5000);
-        By.xpath("//span[text()=\"State\"]").findElement(driver).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[@class='mat-option-text' and contains(text(), 'touch-up')]")).click();
-        Thread.sleep(2000);
-
-        int roomsCleaned = 0;
-
-        // Loop until no touch-up rooms remain
-        while (true) {
-            // Find all rooms currently showing touch-up state
-            List<WebElement> touchupRooms = driver.findElements(
-                    By.xpath("//div[@class='place-code vacant touchup-color']/span")
-            );
-
-            if (touchupRooms.isEmpty()) {
-                System.out.println("✅ All rooms have been cleaned. No more touch-up rooms found.");
-                break;
-            }
-
-            System.out.println("🔄 Touch-up rooms remaining: " + touchupRooms.size());
-
-            // Always click the first available touch-up room
-            touchupRooms.get(0).click();
-            Thread.sleep(3000);
+        for (String hotelName : hotelList) {
+            System.out.println("---- Starting hotel: " + hotelName + " ----");
 
             try {
-                // Click touch-up label inside the room panel
-                wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//span[@class='Clean1' and contains(text(), 'touch-up')]")
-                )).click();
+                selectProperty(hotelName);
 
-                // Set actual place state to "clean"
-                wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//mat-select[@formcontrolname='actualPlaceState']")
-                )).click();
-                Thread.sleep(1000);
+                // Run every flow, one after another, for this hotel
+                for (BridgeFlowEnums.BridgeFlows bridgeFlow : flowsToRun) {
+                    System.out.println("  -> Starting flow: " + bridgeFlow + " for " + hotelName);
 
-                wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//span[@class='mat-option-text' and text()=' clean ']")
-                )).click();
+                    try {
+                        runFlowWithRetry(driver, bridgeFlow);
+                    } catch (Exception e) {
+                        System.out.println("  ✘ Flow failed after retry: " + bridgeFlow + " for " + hotelName);
+                        e.printStackTrace();
+                        // continue to next flow instead of aborting the whole hotel
+                    }
 
-                // Select remark
-                wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//mat-select[@placeholder='Select a Remark']")
-                )).click();
-
-                By.xpath("//span[contains(text(), 'Checkout')]").findElement(driver).click();
-                Thread.sleep(1000);
-
-                // Submit
-                wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//button[@type='submit']")
-                )).click();
-                Thread.sleep(3000);
-
-                System.out.println("✅ Room marked as clean successfully.");
-
-                roomsCleaned++;
-                System.out.println("✅ Cleaned! Total so far: " + roomsCleaned);
+                    System.out.println("  -> Finished flow: " + bridgeFlow + " for " + hotelName);
+                }
 
             } catch (Exception e) {
-                System.out.println("⚠️ Error processing room: " + e.getMessage());
-                // Close any open panel/modal and retry
-                try {
-                    driver.findElement(By.xpath("//button[contains(@class,'close') or @aria-label='Close']")).click();
-                } catch (Exception ignored) {}
-                Thread.sleep(2000);
+                System.out.println("✘ Failed to run flows for: " + hotelName);
+                e.printStackTrace();
             }
-            // Navigate back to the filtered list after each room
-            driver.get("https://dev-bridge.bloomhotels.in/#/place");
-            Thread.sleep(4000);
 
-            // Re-apply dirty filter after navigating back
-            By.xpath("//span[text()=\"touch-up\"]").findElement(driver).click();
-            Thread.sleep(2000);
-            driver.findElement(By.xpath("//span[@class='mat-option-text' and contains(text(), 'touch-up')]")).click();
-            Thread.sleep(3000);
-            // Refresh the filtered room list after each update
-            driver.navigate().refresh();
-            Thread.sleep(3000);
+            System.out.println("---- Finished hotel: " + hotelName + " ----");
         }
 
+        driver.findElement(By.xpath("//mat-icon[contains(@class,'icon')]")).click();
+        Thread.sleep(3000);
+        driver.close();
+    }
 
-        // Go to place page and apply dirty filter ONCE
-        driver.get("https://dev-bridge.bloomhotels.in/#/place");
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//span[text()=\"State\"]")).click();
+         // Runs a single flow, retrying once on failure.
+    private static void runFlowWithRetry(ChromeDriver driver, BridgeFlowEnums.BridgeFlows bridgeFlow) throws InterruptedException {
+        try {
+            initializeFlow(driver, bridgeFlow);
+        } catch (Exception e) {
+            System.out.println("  ⚠ Error on flow " + bridgeFlow + ", retrying once...");
+            initializeFlow(driver, bridgeFlow); // let this throw up if it fails again
+        }
+    }
+
+    private static void selectProperty(String hotelName) throws InterruptedException {
+        // If not already on the property selection screen, navigate back to it first.
+        goToPropertySelection();
+        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+        driver.findElement(By.xpath("//input[@placeholder='Search property by name, city']")).sendKeys(hotelName);
+        Thread.sleep(1500); // let search results populate
+
+        driver.findElement(By.xpath("//div[@class='property-thum']")).click(); // select property
+        System.out.println("✔ Property selected: " + hotelName);
+        Thread.sleep(3000);
+    }
+
+    private static void goToPropertySelection() throws InterruptedException {
+        // Re-hit the base URL (simplest, works if app redirects to property list post-login)
+//        driver.get("https://qa-bridge.bloomrooms.in/");
+        driver.get("https://dev-bridge.bloomhotels.in/");
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[@class='mat-option-text' and contains(text(), 'dirty')]")).click();
-        Thread.sleep(3000);
+    }
 
-//        int roomsCleaned = 0;
+    private static void initializeFlow(ChromeDriver driver, BridgeFlowEnums.BridgeFlows bridgeFlow) throws InterruptedException {
 
-        // OUTER LOOP — keeps running until no dirty rooms are found at all
-        while (true) {
-
-            // Fetch fresh list of all dirty rooms on current page
-            List<WebElement> dirtyRooms = driver.findElements(
-                    By.xpath("//div[@class='place-code vacant dirty-color']")
-            );
-
-            if (dirtyRooms.isEmpty()) {
-                System.out.println("✅ All rooms cleaned! Total: " + roomsCleaned);
-                break;
-            }
-
-            System.out.println("🔍 Found " + dirtyRooms.size() + " dirty room(s). Starting batch...");
-
-            // INNER LOOP — iterate over each dirty room index
-            for (int i = 0; i < dirtyRooms.size(); i++) {
-
-                // Re-fetch list each time to avoid StaleElementReferenceException
-                List<WebElement> currentDirtyRooms = driver.findElements(
-                        By.xpath("//div[@class='place-code vacant dirty-color']")
-                );
-
-                if (i >= currentDirtyRooms.size()) {
-                    System.out.println("⚠️ Room index " + i + " no longer in DOM, skipping.");
-                    break;
-                }
-
-                try {
-                    System.out.println("🧹 Cleaning room " + (i + 1) + " of " + dirtyRooms.size() + "...");
-
-                    // Click the i-th dirty room
-                    currentDirtyRooms.get(i).click();
-                    Thread.sleep(2000);
-
-                    // Click dirty status to open clean/dirty toggle
-                    wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath("//div[@class='clean-status']//span[text()=' dirty ']")
-                    )).click();
-                    Thread.sleep(2000);
-
-                    // Open status dropdown (currently showing 'dirty')
-                    wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath("//mat-select//span[text()='dirty']")
-                    )).click();
-                    Thread.sleep(2000);
-
-                    // Select 'clean'
-                    driver.findElement(By.xpath("//span[text()=' clean ']")).click();
-                    Thread.sleep(2000);
-
-                    // Open remark dropdown
-                    driver.findElement(By.xpath(
-                            "//label[contains(text(),'Select a Remark')]/ancestor::mat-form-field//mat-select"
-                    )).click();
-                    Thread.sleep(2000);
-
-                    // Select 'Checkout'
-                    By.xpath("//span[contains(text(), 'Checkout')]").findElement(driver).click();
-                    Thread.sleep(2000);
-
-                    // Submit
-                    driver.findElement(By.xpath("//button[@type='submit']")).click();
-                    Thread.sleep(3000);
-
-                    roomsCleaned++;
-                    System.out.println("✅ Cleaned! Total so far: " + roomsCleaned);
-
-                } catch (Exception e) {
-                    System.out.println("⚠️ Failed on room index " + i + ": " + e.getMessage());
-                    driver.findElement(By.tagName("body"))
-                            .sendKeys(org.openqa.selenium.Keys.ESCAPE);
-                    Thread.sleep(2000);
-                }
-
-                // Navigate back to the filtered list after each room
-                driver.get("https://dev-bridge.bloomhotels.in/#/place");
-                Thread.sleep(4000);
-
-                // Re-apply dirty filter after navigating back
-                By.xpath("//span[text()=\"dirty\"]").findElement(driver).click();
-                Thread.sleep(2000);
-                driver.findElement(By.xpath("//span[@class='mat-option-text' and contains(text(), 'dirty')]")).click();
-                Thread.sleep(3000);
-            }
-            // Outer loop re-checks — if all rooms were cleaned the list will now be empty
+        if (bridgeFlow == BridgeFlowEnums.BridgeFlows.ACESS_CONTROL) {
+            AcessControl.acesscontrol(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.ANOMALY_REPORT) {
+            AnomalyReport.anomalyreport(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.AREAS) {
+            Areas.areas(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.DIRTY) {
+            Dirty.dirty(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.DUTY_TRACKER) {
+            DutyTracker.dutytracker(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.HOTEL_GUEST) {
+            HotelGuest.hotelguest(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.PLACE_REPORT) {
+            PlaceReport.placereport(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.SUBTASK_REPORT) {
+            SubTaskReport.subtaskreport(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.TASK) {
+            Task.task(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.TASK_REPORT) {
+            TaskReport.taskreport(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.TASK_TEMPLATES) {
+            TaskTemplates.tasktemplate(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.TOUCH_UP) {
+            Touchup.touchup(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.UNITS) {
+            Units.units(driver);
+        } else if (bridgeFlow == BridgeFlowEnums.BridgeFlows.DELETE_TASK) {
+            DeleteTask.deletetask(driver);
         }
-
-
-
-        // Log-out from Bridge
-        driver.findElement(By.xpath("//a[.//span[normalize-space()='Logout']]")).click();
-        Thread.sleep(3000);
-        driver.quit();
-
     }
 }
